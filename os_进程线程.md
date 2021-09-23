@@ -218,6 +218,7 @@ int mkfifoat(int fd, const char *path, mode_t mode);
 
 - 计数器
 - 控制 多个进程 对共享数据 的访问权限
+- *最多同时有几个人可以去动这个东西*
 
 ### 5. 共享存储
 
