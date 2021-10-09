@@ -153,3 +153,62 @@ SoftReference<String> softReference = new SoftReference<String>(str);
   - MinorGC 之前，看一下 老年代 最大连续空闲空间 是否大于 新生代所有东西的空间总和
     - ok 的话 说明 MinorGC 完之后塞的下， 直接Minor GC
   - 否则Full GC, 老年代也要打扫一下
+
+```java
+/**
+ *  <pre>
+ *  金额分的转化 例如10000 会转化为 100.00
+ *  <code>
+ *  CentAmountFieldValueConverter.convert("10000") = 100.00
+ *  </code>
+ * </pre>
+ */
+public class CentAmountFieldValueConverter implements FieldValueConverter {
+    /** 
+     * @see com.alipay.finance.filefactory.core.parse.configparse.converter.FieldValueConverter#convert(com.alipay.finance.filefactory.core.parse.model.Field)
+     */
+    public void convert(Field field) {
+        String value = (String) field.getDestValue();
+        if (StringUtils.isBlank(value)) {
+            return;        
+        }
+
+        try {
+            long cent = Long.parseLong(value);
+            Money amount = new Money(cent);
+            amount.setCent(cent);
+            field.setDestValue(amount.toString());
+        } catch (Exception e) {
+            field.setDestValue(value);
+        }
+    }
+}
+```
+
+```java
+func transfer(A, B, money) {
+    if (A 余额 < money) return -1;
+
+    try{
+    //锁资源阶段
+        lock A; 
+        A -= money;
+        
+        messageId = getUuid();
+        redisQueue.sendMessage(messageId, payAccount=A, recvAccount=B, ammount=money);
+
+        commit A;
+    }
+    //若confirm中某一步失败or超时，则做下面的动作
+    catch {
+        A += money;
+        redisQueue.cancelMessage(messageId);
+    }
+}
+   
+```
+
+```
+Begin transaction
+    update user_account set amount = amount -1000
+```

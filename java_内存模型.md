@@ -29,7 +29,7 @@
 
 - 当一个线程内部方法被执行
   - jvm创建一个Stack Frame
-  - Stack Fram 入栈到虚拟机栈里
+  - Stack Frame 入栈到虚拟机栈里
   - 储存局部变量表，操作数栈，动态链接，方法出口
     - 局部变量表：基本数据类型，对象引用，returnAddress
 
